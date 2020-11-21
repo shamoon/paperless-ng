@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ae2643b9cf0cf5741ae149fb6bc0c480de41329ce48e773eb4b5d760bc5e2244"
+            "sha256": "3ea049dfd52f64304fdd4cc3d195b8e744e36582066578582460301f52fd9b0e"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -49,6 +49,14 @@
             ],
             "index": "pypi",
             "version": "==0.7.6"
+        },
+        "defusedxml": {
+            "hashes": [
+                "sha256:6687150770438374ab581bb7a1b327a847dd9c5749e396102de3fad4e8a3ef93",
+                "sha256:f684034d135af4c6cbb949b8a4d2ed61634515257a67299e5f940fbaa34377f5"
+            ],
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
+            "version": "==0.6.0"
         },
         "django": {
             "hashes": [
@@ -186,6 +194,15 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==1.19.4"
+        },
+        "odfpy": {
+            "hashes": [
+                "sha256:1d1c3ea36a422d3c5cd4c2457ea0e0be59841d6c26d28bd3d5e43f060565d11b",
+                "sha256:db766a6e59c5103212f3cc92ec8dd50a0f3a02790233ed0b52148b70d3c438ec",
+                "sha256:fc3b8d1bc098eba4a0fda865a76d9d1e577c4ceec771426bcb169a82c5e9dfe0"
+            ],
+            "index": "pypi",
+            "version": "==1.4.1"
         },
         "pathtools": {
             "hashes": [
@@ -663,11 +680,11 @@
         },
         "faker": {
             "hashes": [
-                "sha256:3f5d379e4b5ce92a8afe3c2ce59d7c43886370dd3bf9495a936b91888debfc81",
-                "sha256:8c0e8a06acef4b9312902e2ce18becabe62badd3a6632180bd0680c6ee111473"
+                "sha256:5398268e1d751ffdb3ed36b8a790ed98659200599b368eec38a02eed15bce997",
+                "sha256:d4183b8f57316de3be27cd6c3b40e9f9343d27c95c96179f027316c58c2c239e"
             ],
             "markers": "python_version >= '3.5'",
-            "version": "==4.17.0"
+            "version": "==4.17.1"
         },
         "filelock": {
             "hashes": [
