@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, LOCALE_ID, Inject } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { PaperlessTag } from 'src/app/data/paperless-tag';
 import { PaperlessCorrespondent } from 'src/app/data/paperless-correspondent';
 import { PaperlessDocumentType } from 'src/app/data/paperless-document-type';
@@ -11,6 +12,7 @@ import { CorrespondentService } from 'src/app/services/rest/correspondent.servic
 import { FilterRule } from 'src/app/data/filter-rule';
 import { FILTER_ADDED_AFTER, FILTER_ADDED_BEFORE, FILTER_CORRESPONDENT, FILTER_CREATED_AFTER, FILTER_CREATED_BEFORE, FILTER_DOCUMENT_TYPE, FILTER_HAS_TAG, FILTER_RULE_TYPES, FILTER_TITLE } from 'src/app/data/filter-rule-type';
 import { DateSelection } from './filter-dropdown-date/filter-dropdown-date.component';
+import { DatePlaceholderFormatPipe } from 'src/app/pipes/date-placeholder-format.pipe';
 
 @Component({
   selector: 'app-filter-editor',
@@ -23,7 +25,7 @@ export class FilterEditorComponent implements OnInit, OnDestroy {
     if (this.filterRules.length == 1) {
       let rule = this.filterRules[0]
       switch(this.filterRules[0].rule_type) {
-        
+
         case FILTER_CORRESPONDENT:
           return `Correspondent: ${this.correspondents.find(c => c.id == +rule.value)?.name}`
 
@@ -40,10 +42,12 @@ export class FilterEditorComponent implements OnInit, OnDestroy {
   }
 
   constructor(
+    @Inject(LOCALE_ID) private locale: string,
     private documentTypeService: DocumentTypeService,
     private tagService: TagService,
     private correspondentService: CorrespondentService,
-    private dateParser: NgbDateParserFormatter
+    private dateParser: NgbDateParserFormatter,
+    private datePlaceholderFormatPipe: DatePlaceholderFormatPipe
   ) { }
 
   tags: PaperlessTag[] = []
@@ -55,7 +59,7 @@ export class FilterEditorComponent implements OnInit, OnDestroy {
 
   @Output()
   filterRulesChange = new EventEmitter<FilterRule[]>()
-  
+
   hasFilters() {
     return this.filterRules.length > 0
   }
@@ -123,7 +127,7 @@ export class FilterEditorComponent implements OnInit, OnDestroy {
 
     let existingRule = this.filterRules.find(rule => rule.rule_type == filterRuleTypeID && rule.value == value?.toString())
     let existingRuleOfSameType = this.filterRules.find(rule => rule.rule_type == filterRuleTypeID)
-    
+
     if (existingRule) {
       // if this exact rule already exists, remove it in all cases.
       this.filterRules.splice(this.filterRules.indexOf(existingRule), 1)
@@ -181,22 +185,22 @@ export class FilterEditorComponent implements OnInit, OnDestroy {
 
   get dateCreatedBefore(): string {
     let createdBeforeRule: FilterRule = this.filterRules.find(fr => fr.rule_type == FILTER_CREATED_BEFORE)
-    return createdBeforeRule ? createdBeforeRule.value : null
+    return createdBeforeRule ? formatDate(createdBeforeRule.value, this.datePlaceholderFormatPipe.transform(this.locale), this.locale) : null
   }
 
   get dateCreatedAfter(): string {
     let createdAfterRule: FilterRule = this.filterRules.find(fr => fr.rule_type == FILTER_CREATED_AFTER)
-    return createdAfterRule ? createdAfterRule.value : null
+    return createdAfterRule ? formatDate(createdAfterRule.value, this.datePlaceholderFormatPipe.transform(this.locale), this.locale) : null
   }
 
   get dateAddedBefore(): string {
     let addedBeforeRule: FilterRule = this.filterRules.find(fr => fr.rule_type == FILTER_ADDED_BEFORE)
-    return addedBeforeRule ? addedBeforeRule.value : null
+    return addedBeforeRule ? formatDate(addedBeforeRule.value, this.datePlaceholderFormatPipe.transform(this.locale), this.locale) : null
   }
 
   get dateAddedAfter(): string {
     let addedAfterRule: FilterRule = this.filterRules.find(fr => fr.rule_type == FILTER_ADDED_AFTER)
-    return addedAfterRule ? addedAfterRule.value : null
+    return addedAfterRule ? formatDate(addedAfterRule.value, this.datePlaceholderFormatPipe.transform(this.locale), this.locale) : null
   }
 
   setDateCreatedBefore(date?: string) {

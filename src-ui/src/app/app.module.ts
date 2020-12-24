@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -56,7 +57,10 @@ import { DocumentTitlePipe } from './pipes/document-title.pipe';
 import { MetadataCollapseComponent } from './components/document-detail/metadata-collapse/metadata-collapse.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SelectDialogComponent } from './components/common/select-dialog/select-dialog.component';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { DateMaskFormatPipe } from 'src/app/pipes/date-mask-format.pipe';
+import { DatePlaceholderFormatPipe } from 'src/app/pipes/date-placeholder-format.pipe';
+import { DateDeformatPipe } from 'src/app/pipes/date-deformat.pipe';
 
 @NgModule({
   declarations: [
@@ -103,7 +107,10 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
     FilterPipe,
     DocumentTitlePipe,
     MetadataCollapseComponent,
-    SelectDialogComponent
+    SelectDialogComponent,
+    DateMaskFormatPipe,
+    DatePlaceholderFormatPipe,
+    DateDeformatPipe
   ],
   imports: [
     BrowserModule,
@@ -126,7 +133,14 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
       multi: true
     },
     FilterPipe,
-    DocumentTitlePipe
+    DocumentTitlePipe,
+    {
+      provide: LOCALE_ID,
+      useValue: 'en-US'
+    },
+    DateMaskFormatPipe,
+    DatePlaceholderFormatPipe,
+    DateDeformatPipe
   ],
   bootstrap: [AppComponent]
 })
