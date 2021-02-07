@@ -53,12 +53,17 @@ export class TagsComponent implements OnInit, ControlValueAccessor {
         this.tagsFiltered = this.tags
         return
       }
-      let matchedKeys = [], searchTermIndex
+      let tagsBySearchTermIndex = [], searchTermIndex: number
       this.tags.forEach(tag => {
         searchTermIndex = tag.name.toLowerCase().indexOf(searchTerm)
-        if (searchTermIndex > -1) matchedKeys.splice(searchTermIndex, 0, tag)
+        if (searchTermIndex > -1) (tagsBySearchTermIndex[searchTermIndex] = tagsBySearchTermIndex[searchTermIndex] || []).push(tag)
       })
-      this.tagsFiltered = matchedKeys
+      tagsBySearchTermIndex.map(tagsWithSameSearchTermIndex => tagsWithSameSearchTermIndex.sort((tagA, tagB) => {
+        if (tagA.name.toLowerCase() < tagB.name.toLowerCase()) return -1
+        else if (tagA.name.toLowerCase() > tagB.name.toLowerCase()) return 1
+        return 0
+      }))
+      this.tagsFiltered = tagsBySearchTermIndex.flat(1)
     })
   }
 
