@@ -2,11 +2,12 @@
   <label for="tags" i18n>Tags</label>
 
   <div class="input-group flex-nowrap">
-    <ng-select name="tags" [items]="tags" bindLabel="name" bindValue="id" [(ngModel)]="value"
+    <ng-select name="tags" [items]="tagsFiltered" bindLabel="name" bindValue="id" [(ngModel)]="value"
       [multiple]="true"
       [closeOnSelect]="false"
       [clearSearchOnAdd]="true"
       [hideSelected]="true"
+      [typeahead]="tagsInput$"
       (change)="onChange(value)"
       (blur)="onTouched()">
 
@@ -39,8 +40,8 @@
     <ng-container *ngFor="let tag of getSuggestions()">
       <a (click)="addTag(tag.id)" [routerLink]="">{{tag.name}}</a>&nbsp;
     </ng-container>
-    
-    
+
+
   </small>
 
 </div>

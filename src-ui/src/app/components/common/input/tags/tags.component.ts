@@ -4,6 +4,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TagEditDialogComponent } from 'src/app/components/manage/tag-list/tag-edit-dialog/tag-edit-dialog.component';
 import { PaperlessTag } from 'src/app/data/paperless-tag';
 import { TagService } from 'src/app/services/rest/tag.service';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   providers: [{
@@ -40,6 +42,23 @@ export class TagsComponent implements OnInit, ControlValueAccessor {
   ngOnInit(): void {
     this.tagService.listAll().subscribe(result => {
       this.tags = result.results
+      this.tagsFiltered = this.tags
+    })
+
+    this.tagsInput$.pipe(
+      debounceTime(200),
+      distinctUntilChanged())
+    .subscribe(searchTerm => {
+      if (!searchTerm || searchTerm.length == 0) {
+        this.tagsFiltered = this.tags
+        return
+      }
+      let matchedKeys = [], searchTermIndex
+      this.tags.forEach(tag => {
+        searchTermIndex = tag.name.toLowerCase().indexOf(searchTerm)
+        if (searchTermIndex > -1) matchedKeys.splice(searchTermIndex, 0, tag)
+      })
+      this.tagsFiltered = matchedKeys
     })
   }
 
@@ -55,6 +74,8 @@ export class TagsComponent implements OnInit, ControlValueAccessor {
   value: number[]
 
   tags: PaperlessTag[]
+  tagsFiltered: PaperlessTag[]
+  tagsInput$ = new Subject<string>()
 
   getTag(id) {
     if (this.tags) {
